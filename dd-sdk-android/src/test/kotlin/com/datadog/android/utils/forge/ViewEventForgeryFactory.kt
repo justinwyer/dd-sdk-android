@@ -6,6 +6,7 @@
 
 package com.datadog.android.utils.forge
 
+import com.datadog.android.rum.model.ResourceEvent
 import com.datadog.android.rum.model.ViewEvent
 import fr.xgouchet.elmyr.Forge
 import fr.xgouchet.elmyr.ForgeryFactory
@@ -96,6 +97,10 @@ internal class ViewEventForgeryFactory : ForgeryFactory<ViewEvent> {
                 type = ViewEvent.Type.USER,
                 hasReplay = forge.aNullable { aBool() }
             ),
+            source = forge.aNullable { aValueFrom(ViewEvent.Source::class.java) },
+            ciTest = forge.aNullable {
+                ViewEvent.CiTest(anHexadecimalString())
+            },
             context = forge.aNullable {
                 ViewEvent.Context(
                     additionalProperties = exhaustiveAttributes()

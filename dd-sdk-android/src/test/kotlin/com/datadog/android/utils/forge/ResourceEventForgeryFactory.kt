@@ -12,6 +12,7 @@ import com.datadog.android.rum.internal.domain.scope.dns
 import com.datadog.android.rum.internal.domain.scope.download
 import com.datadog.android.rum.internal.domain.scope.firstByte
 import com.datadog.android.rum.internal.domain.scope.ssl
+import com.datadog.android.rum.model.ActionEvent
 import com.datadog.android.rum.model.ResourceEvent
 import fr.xgouchet.elmyr.Forge
 import fr.xgouchet.elmyr.ForgeryFactory
@@ -92,6 +93,10 @@ internal class ResourceEventForgeryFactory :
                 type = ResourceEvent.ResourceEventSessionType.USER,
                 hasReplay = forge.aNullable { aBool() }
             ),
+            source = forge.aNullable { aValueFrom(ResourceEvent.Source::class.java) },
+            ciTest = forge.aNullable {
+                ResourceEvent.CiTest(anHexadecimalString())
+            },
             context = forge.aNullable {
                 ResourceEvent.Context(
                     additionalProperties = forge.exhaustiveAttributes()

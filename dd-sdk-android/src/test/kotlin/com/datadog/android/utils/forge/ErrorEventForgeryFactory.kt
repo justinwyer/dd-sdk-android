@@ -7,6 +7,7 @@
 package com.datadog.android.utils.forge
 
 import com.datadog.android.core.internal.utils.loggableStackTrace
+import com.datadog.android.rum.model.ActionEvent
 import com.datadog.android.rum.model.ErrorEvent
 import com.datadog.tools.unit.forge.aThrowable
 import fr.xgouchet.elmyr.Forge
@@ -86,6 +87,10 @@ internal class ErrorEventForgeryFactory : ForgeryFactory<ErrorEvent> {
                 type = ErrorEvent.ErrorEventSessionType.USER,
                 hasReplay = forge.aNullable { aBool() }
             ),
+            source = forge.aNullable { aValueFrom(ErrorEvent.ErrorEventSource::class.java) },
+            ciTest = forge.aNullable {
+                ErrorEvent.CiTest(anHexadecimalString())
+            },
             context = forge.aNullable {
                 ErrorEvent.Context(additionalProperties = forge.exhaustiveAttributes())
             },

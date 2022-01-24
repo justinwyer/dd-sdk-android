@@ -6,6 +6,7 @@
 
 package com.datadog.android.utils.forge
 
+import com.datadog.android.rum.model.ActionEvent
 import com.datadog.android.rum.model.LongTaskEvent
 import fr.xgouchet.elmyr.Forge
 import fr.xgouchet.elmyr.ForgeryFactory
@@ -63,6 +64,10 @@ internal class LongTaskEventForgeryFactory :
                 type = LongTaskEvent.Type.USER,
                 hasReplay = forge.aNullable { aBool() }
             ),
+            source = forge.aNullable { aValueFrom(LongTaskEvent.Source::class.java) },
+            ciTest = forge.aNullable {
+                LongTaskEvent.CiTest(anHexadecimalString())
+            },
             context = forge.aNullable {
                 LongTaskEvent.Context(
                     additionalProperties = forge.exhaustiveAttributes()

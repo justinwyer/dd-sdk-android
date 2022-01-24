@@ -68,6 +68,10 @@ internal class ActionEventForgeryFactory :
                 type = ActionEvent.ActionEventSessionType.USER,
                 hasReplay = forge.aNullable { aBool() }
             ),
+            source = forge.aNullable { aValueFrom(ActionEvent.Source::class.java) },
+            ciTest = forge.aNullable {
+                ActionEvent.CiTest(anHexadecimalString())
+            },
             context = forge.aNullable {
                 ActionEvent.Context(additionalProperties = forge.exhaustiveAttributes())
             },
