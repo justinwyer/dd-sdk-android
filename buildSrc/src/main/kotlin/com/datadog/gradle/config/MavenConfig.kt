@@ -11,6 +11,7 @@ import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.findByType
+import org.gradle.kotlin.dsl.repositories
 import org.gradle.plugins.signing.SigningExtension
 
 object MavenConfig {
@@ -36,6 +37,7 @@ fun Project.publishingConfig(projectDescription: String) {
     }
 
     afterEvaluate {
+
         val publishingExtension = extensions.findByType(PublishingExtension::class)
         val signingExtension = extensions.findByType(SigningExtension::class)
         if (publishingExtension == null || signingExtension == null) {
@@ -44,6 +46,19 @@ fun Project.publishingConfig(projectDescription: String) {
         }
 
         publishingExtension.apply {
+
+            System.getenv("GITHUB_REPOSITORY")?.let {
+                repositories {
+                    maven {
+                        name = "github"
+                        url = uri("https://maven.pkg.github.com/$it")
+                        credentials {
+                            username = System.getenv("GITHUB_ACTOR")
+                            password = System.getenv("GITHUB_TOKEN")
+                        }
+                    }
+                }
+            }
 
             publications.create(MavenConfig.PUBLICATION, MavenPublication::class.java) {
                 from(components.getByName("release"))

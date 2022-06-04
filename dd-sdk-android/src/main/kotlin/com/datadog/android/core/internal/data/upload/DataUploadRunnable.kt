@@ -98,7 +98,7 @@ internal class DataUploadRunnable(
     // endregion
 
     companion object {
-        internal const val LOW_BATTERY_THRESHOLD = 10
+        internal const val LOW_BATTERY_THRESHOLD = 0
 
         internal const val MIN_DELAY_FACTOR = 1
         internal const val DEFAULT_DELAY_FACTOR = 5

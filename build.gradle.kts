@@ -1,4 +1,5 @@
 import com.datadog.gradle.config.nightlyTestsCoverageConfig
+import java.lang.System.getenv
 
 /*
  * Unless explicitly stated otherwise all files in this repository are licensed under the Apache License Version 2.0.
@@ -8,7 +9,6 @@ import com.datadog.gradle.config.nightlyTestsCoverageConfig
 
 plugins {
     `maven-publish`
-    id("io.github.gradle-nexus.publish-plugin")
     id("org.jetbrains.kotlinx.kover")
 }
 
@@ -36,18 +36,6 @@ allprojects {
         google()
         mavenCentral()
         maven { setUrl(com.datadog.gradle.Dependencies.Repositories.Jitpack) }
-    }
-}
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            val sonatypeUsername = System.getenv("OSSRH_USERNAME")
-            val sonatypePassword = System.getenv("OSSRH_PASSWORD")
-            stagingProfileId.set("378eecbbe2cf9")
-            if (sonatypeUsername != null) username.set(sonatypeUsername)
-            if (sonatypePassword != null) password.set(sonatypePassword)
-        }
     }
 }
 
